@@ -6,6 +6,8 @@
  */
 class WordpressPageContentSource extends WordpressContentSource {
 
+	public static $icon = 'wordpressconnector/images/wordpresspagesource';
+
 	public function getRoot() {
 		return $this;
 	}
