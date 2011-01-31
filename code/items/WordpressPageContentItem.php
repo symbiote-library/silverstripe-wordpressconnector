@@ -35,6 +35,24 @@ class WordpressPageContentItem extends ExternalContentItem {
 		$item->AuthorName    = $data['wp_author_display_name'];
 		$item->Template      = $data['wp_page_template'];
 
+		$categories = new DataObjectSet();
+		foreach ($data['categories'] as $category) {
+			$categories->push(new ArrayData(array(
+				'Name' => $category
+			)));
+		}
+		$item->Categories = $categories;
+
+		$custom = new DataObjectSet();
+		foreach ($data['custom_fields'] as $field) {
+			$custom->push(new ArrayData(array(
+				'ID'    => $field['id'],
+				'Key'   => $field['key'],
+				'Value' => $field['value']
+			)));
+		}
+		$item->CustomFields = $custom;
+
 		return $item;
 	}
 
@@ -44,6 +62,11 @@ class WordpressPageContentItem extends ExternalContentItem {
 		$fields->fieldByName('Root.Details')->getChildren()->changeFieldOrder(array(
 			'Title', 'Status', 'CreatedAt', 'ShowContentInMenu', 'Description',
 			'Excerpt', 'TextMore', 'ExternalContentItem_Alert'
+		));
+
+		$fields->addFieldToTab('Root.Details', new ReadonlyField(
+			'CategoryList', 'Categories',
+			implode(', ', $this->Categories->map('Name', 'Name'))
 		));
 
 		$fields->addFieldsToTab('Root.Users', array(
@@ -68,6 +91,17 @@ class WordpressPageContentItem extends ExternalContentItem {
 			new ReadonlyField('Template', null, $this->Template),
 			new ReadonlyField('Order', null, $this->Order)
 		));
+
+		$custom = new TableListField('CustomFields', null, array(
+			'ID'    => 'ID',
+			'Key'   => 'Key',
+			'Value' => 'Value'
+		));
+		$custom->setCustomSourceItems($this->CustomFields);
+
+		$fields->addFieldToTab(
+			'Root.CustomFields', $custom->performReadonlyTransformation()
+		);
 
 		return $fields;
 	}
