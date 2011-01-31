@@ -49,8 +49,25 @@ class WordpressPostContentSource extends WordpressContentSource {
 		return $result;
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		if (!class_exists('BlogEntry')) {
+			$fields->addFieldToTab('Root.Import', new LiteralField(
+				'RequiresBlogImport',
+				'<p>The Wordpress connector requires the blog module to import posts.</p>'
+			));
+		}
+
+		return $fields;
+	}
+
 	public function allowedImportTargets() {
 		return array('sitetree' => true);
+	}
+
+	public function canImport() {
+		return class_exists('BlogEntry');
 	}
 
 }

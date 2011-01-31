@@ -98,6 +98,13 @@ class WordpressPostContentItem extends ExternalContentItem {
 			'Root.CustomFields', $custom->performReadonlyTransformation()
 		);
 
+		if (!class_exists('BlogEntry')) {
+			$fields->addFieldToTab('Root.Import', new LiteralField(
+				'RequiresBlogImport',
+				'<p>The Wordpress connector requires the blog module to import posts.</p>'
+			));
+		}
+
 		return $fields;
 	}
 
@@ -107,6 +114,10 @@ class WordpressPostContentItem extends ExternalContentItem {
 
 	public function numChildren() {
 		return 0;
+	}
+
+	public function canImport() {
+		return class_exists('BlogEntry');
 	}
 
 }
