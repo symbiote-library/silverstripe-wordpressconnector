@@ -12,7 +12,7 @@ class WordpressPostContentItem extends ExternalContentItem {
 		$item->UserID        = $data['userid'];
 		$item->PostID        = $data['postid'];
 		$item->CreatedAt     = strtotime($data['dateCreated']);
-		$item->Title         = $data['title'];
+		$item->Title         = html_entity_decode($data['title']);
 		$item->Description   = $data['description'];
 		$item->Link          = $data['link'];
 		$item->Permalink     = $data['permaLink'];

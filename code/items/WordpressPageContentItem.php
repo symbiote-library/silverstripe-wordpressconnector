@@ -18,7 +18,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		$item->UserID        = $data['userid'];
 		$item->Status        = $data['page_status'];
 		$item->Description   = $data['description'];
-		$item->Title         = $data['title'];
+		$item->Title         = html_entity_decode($data['title']);
 		$item->Link          = $data['link'];
 		$item->Permalink     = $data['permaLink'];
 		$item->Excerpt       = $data['excerpt'];
