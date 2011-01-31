@@ -12,11 +12,18 @@ require_once 'Zend/XmlRpc/Client.php';
  */
 class WordpressContentSource extends ExternalContentSource {
 
+	const DEFAULT_CACHE_LIFETIME = 3600;
+
 	public static $db = array(
-		'BaseUrl'  => 'Varchar(255)',
-		'BlogId'   => 'Int',
-		'Username' => 'Varchar(255)',
-		'Password' => 'Varchar(255)'
+		'BaseUrl'       => 'Varchar(255)',
+		'BlogId'        => 'Int',
+		'Username'      => 'Varchar(255)',
+		'Password'      => 'Varchar(255)',
+		'CacheLifetime' => 'Int'
+	);
+
+	public static $defaults = array(
+		'CacheLifetime' => self::DEFAULT_CACHE_LIFETIME
 	);
 
 	protected $client;
@@ -33,6 +40,9 @@ class WordpressContentSource extends ExternalContentSource {
 		$fields->fieldByName('Root.Main')->getChildren()->changeFieldOrder(array(
 			'Name', 'BaseUrl', 'BlogId', 'Username', 'Password', 'ShowContentInMenu'
 		));
+
+		$fields->addFieldToTab('Root.Advanced',
+			new NumericField('CacheLifetime', 'Cache Lifetime (in seconds)'));
 
 		if ($this->BaseUrl && !$this->isValid()) {
 			$error = new LiteralField('ConnError', sprintf(
@@ -67,7 +77,8 @@ class WordpressContentSource extends ExternalContentSource {
 			$client->setSkipSystemLookup(true);
 
 			$this->client = SS_Cache::factory('wordpress_posts', 'Class', array(
-				'cached_entity' => $client
+				'cached_entity' => $client,
+				'lifetime'      => $this->getCacheLifetime()
 			));
 		}
 
@@ -111,6 +122,13 @@ class WordpressContentSource extends ExternalContentSource {
 	 */
 	public function canImport() {
 		return $this->isValid();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getCacheLifetime() {
+		return ($t = $this->getField('CacheLifetime')) ? $t : self::DEFAULT_CACHE_LIFETIME;
 	}
 
 }
