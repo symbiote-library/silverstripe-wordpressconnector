@@ -65,4 +65,8 @@ class WordpressPageContentSource extends WordpressContentSource {
 		return $result;
 	}
 
+	public function canCreate() {
+		return true;
+	}
+
 }

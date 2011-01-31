@@ -118,6 +118,13 @@ class WordpressContentSource extends ExternalContentSource {
 	}
 
 	/**
+	 * Prevent creating this abstract content source type.
+	 */
+	public function canCreate() {
+		return false;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function canImport() {

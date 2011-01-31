@@ -68,6 +68,10 @@ class WordpressPostContentSource extends WordpressContentSource {
 		return array('sitetree' => true);
 	}
 
+	public function canCreate() {
+		return true;
+	}
+
 	public function canImport() {
 		return class_exists('BlogEntry');
 	}
