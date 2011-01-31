@@ -13,7 +13,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 	public static function factory($source, $data) {
 		$item = new self($source, $data['page_id']);
 
-		$item->ID            = $data['page_id'];
+		$item->WordpressID   = $data['page_id'];
 		$item->CreatedAt     = strtotime($data['dateCreated']);
 		$item->UserID        = $data['userid'];
 		$item->Status        = $data['page_status'];

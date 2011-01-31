@@ -30,7 +30,7 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 		$page->ParentID        = $parent->ID;
 		$page->ProvideComments = $item->AllowComments;
 
-		$page->WordpressID  = $item->ID;
+		$page->WordpressID  = $item->WordpressID;
 		$page->OriginalData = serialize($item->getRemoteProperties());
 
 		$page->write();
