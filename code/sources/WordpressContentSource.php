@@ -63,8 +63,12 @@ class WordpressContentSource extends ExternalContentSource {
 	 */
 	public function getClient() {
 		if (!$this->client) {
-			$this->client = new Zend_XmlRpc_Client($this->getApiUrl());
-			$this->client->setSkipSystemLookup(true);
+			$client = new Zend_XmlRpc_Client($this->getApiUrl());
+			$client->setSkipSystemLookup(true);
+
+			$this->client = SS_Cache::factory('wordpress_posts', 'Class', array(
+				'cached_entity' => $client
+			));
 		}
 
 		return $this->client;
