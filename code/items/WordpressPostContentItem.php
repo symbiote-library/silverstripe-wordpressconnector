@@ -1,0 +1,73 @@
+<?php
+/**
+ * A content item that represents an external wordpress post.
+ *
+ * @package silverstripe-wordpressconnector
+ */
+class WordpressPostContentItem extends ExternalContentItem {
+
+	public static function factory($source, $data) {
+		$item = new self($source, $data['postid']);
+
+		$item->UserID        = $data['userid'];
+		$item->PostID        = $data['postid'];
+		$item->CreatedAt     = strtotime($data['dateCreated']);
+		$item->Title         = $data['title'];
+		$item->Description   = $data['description'];
+		$item->Link          = $data['link'];
+		$item->Permalink     = $data['permaLink'];
+		$item->Excerpt       = $data['mt_excerpt'];
+		$item->TextMore      = $data['mt_text_more'];
+		$item->AllowComments = $data['mt_allow_comments'];
+		$item->AllowPings    = $data['mt_allow_pings'];
+		$item->Keywords      = $data['mt_keywords'];
+		$item->Slug          = $data['wp_slug'];
+		$item->Password      = $data['wp_password'];
+		$item->AuthorID      = $data['wp_author_id'];
+		$item->AuthorName    = $data['wp_author_display_name'];
+		$item->Status        = $data['post_status'];
+		$item->PostFormat    = $data['wp_post_format'];
+
+		return $item;
+	}
+
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->fieldByName('Root.Details')->getChildren()->changeFieldOrder(array(
+			'Title', 'PostID', 'Status', 'CreatedAt', 'ShowContentInMenu',
+			'Description', 'Excerpt', 'TextMore', 'ExternalContentItem_Alert'
+		));
+
+		$fields->addFieldsToTab('Root.Users', array(
+			new ReadonlyField('UserID', 'User ID', $this->UserID),
+			new ReadonlyField('AuthorID', 'Author ID', $this->AuthorID),
+			new ReadonlyField('AuthorName', 'Author Name', $this->AuthorName)
+		));
+
+		$fields->addFieldsToTab('Root.Metadata', array(
+			new ReadonlyField('Keywords', null, $this->Keywords),
+			new ReadonlyField('Slug', null, $this->Slug),
+			new ReadonlyField('Link', null, $this->Link),
+			new ReadonlyField('Permalink', null, $this->Permalink)
+		));
+
+		$fields->addFieldsToTab('Root.Behaviour', array(
+			new ReadonlyField('AllowComments', 'Allow Comments', $this->AllowComments),
+			new ReadonlyField('AllowPings', 'Allow Pings', $this->AllowPings),
+			new ReadonlyField('Password', null, $this->Password),
+			new ReadonlyField('PostFormat', 'Post Format', $this->PostFormat)
+		));
+
+		return $fields;
+	}
+
+	public function stageChildren() {
+		return new DataObjectSet();
+	}
+
+	public function numChildren() {
+		return 0;
+	}
+
+}
