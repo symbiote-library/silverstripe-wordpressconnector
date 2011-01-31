@@ -70,6 +70,10 @@ class WordpressContentSource extends ExternalContentSource {
 		return $this->client;
 	}
 
+	public function getContentImporter() {
+		return new WordpressImporter();
+	}
+
 	/**
 	 * @return string
 	 */

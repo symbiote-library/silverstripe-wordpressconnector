@@ -27,6 +27,10 @@ class WordpressPageContentSource extends WordpressContentSource {
 		return $this->getPagesByParentId(0);
 	}
 
+	public function allowedImportTargets() {
+		return array('sitetree' => true);
+	}
+
 	/**
 	 * Gets all the page content items that sit under a parent ID.
 	 *
