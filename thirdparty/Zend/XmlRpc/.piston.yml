@@ -1,0 +1,8 @@
+--- 
+repository_url: http://framework.zend.com/svn/framework/standard/tags/release-1.11.2/library/Zend/XmlRpc/
+lock: false
+repository_class: Piston::Svn::Repository
+format: 1
+handler: 
+  piston:uuid: 44c647ce-9c0f-0410-b52a-842ac1e357ba
+  piston:remote-revision: 23682
