@@ -13,33 +13,27 @@ class WordpressPageContentItem extends ExternalContentItem {
 	public static function factory($source, $data) {
 		$item = new self($source, $data['page_id']);
 
-		// If page_title is set, then this is just a partial data chunk.
-		if (isset($data['page_title'])) {
-			$item->Title     = $data['page_title'];
-			$item->ParentID  = $data['page_parent_id'];
-			$item->CreatedAt = strtotime($data['dateCreated']);
-		} else {
-			$item->CreatedAt     = strtotime($data['dateCreated']);
-			$item->UserID        = $data['userid'];
-			$item->Status        = $data['page_status'];
-			$item->Description   = $data['description'];
-			$item->Title         = $data['title'];
-			$item->Link          = $data['link'];
-			$item->Permalink     = $data['permaLink'];
-			$item->Excerpt       = $data['excerpt'];
-			$item->TextMore      = $data['text_more'];
-			$item->AllowComments = $data['mt_allow_comments'];
-			$item->AllowPings    = $data['mt_allow_pings'];
-			$item->Slug          = $data['wp_slug'];
-			$item->Password      = $data['wp_password'];
-			$item->Author        = $data['wp_author'];
-			$item->ParentID      = $data['wp_page_parent_id'];
-			$item->ParentTitle   = $data['wp_page_parent_title'];
-			$item->Order         = $data['wp_page_order'];
-			$item->AuthorID      = $data['wp_author_id'];
-			$item->AuthorName    = $data['wp_author_display_name'];
-			$item->Template      = $data['wp_page_template'];
-		}
+		$item->ID            = $data['page_id'];
+		$item->CreatedAt     = strtotime($data['dateCreated']);
+		$item->UserID        = $data['userid'];
+		$item->Status        = $data['page_status'];
+		$item->Description   = $data['description'];
+		$item->Title         = $data['title'];
+		$item->Link          = $data['link'];
+		$item->Permalink     = $data['permaLink'];
+		$item->Excerpt       = $data['excerpt'];
+		$item->TextMore      = $data['text_more'];
+		$item->AllowComments = $data['mt_allow_comments'];
+		$item->AllowPings    = $data['mt_allow_pings'];
+		$item->Slug          = $data['wp_slug'];
+		$item->Password      = $data['wp_password'];
+		$item->Author        = $data['wp_author'];
+		$item->ParentID      = $data['wp_page_parent_id'];
+		$item->ParentTitle   = $data['wp_page_parent_title'];
+		$item->Order         = $data['wp_page_order'];
+		$item->AuthorID      = $data['wp_author_id'];
+		$item->AuthorName    = $data['wp_author_display_name'];
+		$item->Template      = $data['wp_page_template'];
 
 		return $item;
 	}

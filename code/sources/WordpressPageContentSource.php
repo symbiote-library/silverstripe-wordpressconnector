@@ -42,7 +42,7 @@ class WordpressPageContentSource extends WordpressContentSource {
 
 		try {
 			$client = $this->getClient();
-			$pages  = $client->call('wp.getPageList', array(
+			$pages  = $client->call('wp.getPages', array(
 				$this->BlogId, $this->Username, $this->Password
 			));
 		} catch (Zend_Exception $exception) {
@@ -51,7 +51,7 @@ class WordpressPageContentSource extends WordpressContentSource {
 		}
 
 		foreach ($pages as $page) {
-			if ($page['page_parent_id'] == $parent) {
+			if ($page['wp_page_parent_id'] == $parent) {
 				$result->push(WordpressPageContentItem::factory($this, $page));
 			}
 		}
