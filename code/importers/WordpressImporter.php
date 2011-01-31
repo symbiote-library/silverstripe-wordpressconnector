@@ -6,10 +6,14 @@ class WordpressImporter extends ExternalContentImporter {
 
 	public function __construct() {
 		$this->contentTransforms['page'] = new WordpressPageTransformer();
+		$this->contentTransforms['post'] = new WordpressPostTransformer();
 	}
 
 	public function getExternalType($item) {
-		return 'page';
+		switch ($item->class) {
+			case 'WordpressPageContentItem': return 'page';
+			case 'WordpressPostContentItem': return 'post';
+		}
 	}
 
 }

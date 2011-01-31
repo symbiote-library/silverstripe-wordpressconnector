@@ -49,4 +49,8 @@ class WordpressPostContentSource extends WordpressContentSource {
 		return $result;
 	}
 
+	public function allowedImportTargets() {
+		return array('sitetree' => true);
+	}
+
 }
