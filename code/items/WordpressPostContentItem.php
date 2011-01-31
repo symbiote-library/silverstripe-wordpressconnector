@@ -27,7 +27,10 @@ class WordpressPostContentItem extends ExternalContentItem {
 		$item->AuthorName    = $data['wp_author_display_name'];
 		$item->Status        = $data['post_status'];
 		$item->PostFormat    = $data['wp_post_format'];
-		$item->Sticky        = $data['sticky'];
+
+		if (isset($data['sticky'])) {
+			$item->Sticky = $data['sticky'];
+		}
 
 		$categories = new DataObjectSet();
 		foreach ($data['categories'] as $category) {
