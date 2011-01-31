@@ -10,7 +10,7 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 		$page = new WordpressPage();
 
 		$exists = DataObject::get_one('WordpressPage', sprintf(
-			'"WordpressID" = %d AND "ParentID" = %d', $item->ID, $parent->ID
+			'"WordpressID" = %d AND "ParentID" = %d', $item->WordpressID, $parent->ID
 		));
 
 		if ($exists) switch ($strategy) {
