@@ -27,6 +27,25 @@ class WordpressPostContentItem extends ExternalContentItem {
 		$item->AuthorName    = $data['wp_author_display_name'];
 		$item->Status        = $data['post_status'];
 		$item->PostFormat    = $data['wp_post_format'];
+		$item->Sticky        = $data['sticky'];
+
+		$categories = new DataObjectSet();
+		foreach ($data['categories'] as $category) {
+			$categories->push(new ArrayData(array(
+				'Name' => $category
+			)));
+		}
+		$item->Categories = $categories;
+
+		$custom = new DataObjectSet();
+		foreach ($data['custom_fields'] as $field) {
+			$custom->push(new ArrayData(array(
+				'ID'    => $field['id'],
+				'Key'   => $field['key'],
+				'Value' => $field['value']
+			)));
+		}
+		$item->CustomFields = $custom;
 
 		return $item;
 	}
@@ -37,6 +56,11 @@ class WordpressPostContentItem extends ExternalContentItem {
 		$fields->fieldByName('Root.Details')->getChildren()->changeFieldOrder(array(
 			'Title', 'PostID', 'Status', 'CreatedAt', 'ShowContentInMenu',
 			'Description', 'Excerpt', 'TextMore', 'ExternalContentItem_Alert'
+		));
+
+		$fields->addFieldToTab('Root.Details', new ReadonlyField(
+			'CategoryList', 'Categories',
+			implode(', ', $this->Categories->map('Name', 'Name'))
 		));
 
 		$fields->addFieldsToTab('Root.Users', array(
@@ -56,8 +80,20 @@ class WordpressPostContentItem extends ExternalContentItem {
 			new ReadonlyField('AllowComments', 'Allow Comments', $this->AllowComments),
 			new ReadonlyField('AllowPings', 'Allow Pings', $this->AllowPings),
 			new ReadonlyField('Password', null, $this->Password),
-			new ReadonlyField('PostFormat', 'Post Format', $this->PostFormat)
+			new ReadonlyField('PostFormat', 'Post Format', $this->PostFormat),
+			new ReadonlyField('Sticky', null, $this->Sticky)
 		));
+
+		$custom = new TableListField('CustomFields', null, array(
+			'ID'    => 'ID',
+			'Key'   => 'Key',
+			'Value' => 'Value'
+		));
+		$custom->setCustomSourceItems($this->CustomFields);
+
+		$fields->addFieldToTab(
+			'Root.CustomFields', $custom->performReadonlyTransformation()
+		);
 
 		return $fields;
 	}
