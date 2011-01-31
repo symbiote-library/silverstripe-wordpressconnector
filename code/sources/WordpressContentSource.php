@@ -34,7 +34,7 @@ class WordpressContentSource extends ExternalContentSource {
 			'Name', 'BaseUrl', 'BlogId', 'Username', 'Password', 'ShowContentInMenu'
 		));
 
-		if (!$this->isValid()) {
+		if ($this->BaseUrl && !$this->isValid()) {
 			$error = new LiteralField('ConnError', sprintf(
 				'<p id="wordpress-conn-error">%s <span>%s</span></p>',
 				$this->fieldLabel('ConnError'), $this->error
