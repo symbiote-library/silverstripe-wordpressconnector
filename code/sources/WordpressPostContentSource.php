@@ -59,13 +59,17 @@ class WordpressPostContentSource extends WordpressContentSource {
 				'RequiresBlogImport',
 				'<p>The Wordpress connector requires the blog module to import posts.</p>'
 			));
+		} else {
+			$blogs = DataObject::get('BlogHolder');
+			$map = $blogs ? $blogs->map() : array();
+
+			$fields->addFieldsToTab('Root.Import', array(
+				new DropdownField('MigrationTarget', 'Blog to import into', $map),
+				new CheckboxField('ImportComments', 'Import comments attached to the posts?', true)
+			));
 		}
 
 		return $fields;
-	}
-
-	public function allowedImportTargets() {
-		return array('sitetree' => true);
 	}
 
 	public function canCreate() {
