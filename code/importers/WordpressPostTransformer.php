@@ -48,10 +48,23 @@ class WordpressPostTransformer implements ExternalContentTransformer {
 		$post->write();
 
 		// Import comments across from the wordpress site.
+		if (isset($params['ImportComments'])) {
+			$this->importComments($item, $post);
+		}
+
+		// Scan the post for media files, and import them as well.
+		if (isset($params['ImportMedia'])) {
+			$this->importMedia($item, $post);
+		}
+	}
+
+	public function setImporter($importer) {
+		$this->importer = $importer;
+	}
+
+	protected function importComments($item, $post) {
 		$source = $item->getSource();
 		$client = $source->getClient();
-
-		if (!isset($params['ImportComments'])) return;
 
 		$struct = new Zend_XmlRpc_Value_Struct(array(
 			'post_id' => $item->PostID,
@@ -75,8 +88,33 @@ class WordpressPostTransformer implements ExternalContentTransformer {
 		}
 	}
 
-	public function setImporter($importer) {
-		$this->importer = $importer;
+	protected function importMedia($item, $post) {
+		$source  = $item->getSource();
+		$params  = $this->importer->getParams();
+		$folder  = $params['AssetsPath'];
+		$content = $item->Content;
+
+		if ($folder) Folder::findOrMake($folder);
+
+		$url = trim(preg_replace('~^[a-z]+://~', null, $source->BaseUrl), '/');
+		$pattern = sprintf(
+			'~[a-z]+://%s/wp-content/uploads/[^"]+~', $url
+		);
+
+		if (!preg_match_all($pattern, $post->Content, $matches)) return;
+
+		foreach ($matches[0] as $match) {
+			if (!$contents = @file_get_contents($match)) continue;
+
+			$name = basename($match);
+			$path = Controller::join_links(ASSETS_PATH, $folder, $name);
+			$link = Controller::join_links(ASSETS_DIR, $folder, $name);
+
+			file_put_contents($path, $contents);
+			$post->Content = str_replace($match, $link, $post->Content);
+		}
+
+		$post->write();
 	}
 
 }

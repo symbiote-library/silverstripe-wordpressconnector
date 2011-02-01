@@ -54,6 +54,9 @@ class WordpressPostContentSource extends WordpressContentSource {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+		Requirements::javascript('wordpressconnector/javascript/WordpressPostContentSource.js');
+
 		if (!class_exists('BlogEntry')) {
 			$fields->addFieldToTab('Root.Import', new LiteralField(
 				'RequiresBlogImport',
@@ -65,7 +68,12 @@ class WordpressPostContentSource extends WordpressContentSource {
 
 			$fields->addFieldsToTab('Root.Import', array(
 				new DropdownField('MigrationTarget', 'Blog to import into', $map),
-				new CheckboxField('ImportComments', 'Import comments attached to the posts?', true)
+				new CheckboxField('ImportComments',
+					'Import comments attached to the posts?', true),
+				new CheckboxField('ImportMedia',
+					'Import and rewrite references to wordpress media?', true),
+				new TextField('AssetsPath',
+					'Upload wordpress files to', 'Uploads/Wordpress')
 			));
 		}
 
