@@ -10,9 +10,7 @@ require_once 'Zend/XmlRpc/Value/Struct.php';
  *
  * @package silverstripe-wordpressconnector
  */
-class WordpressPostTransformer implements ExternalContentTransformer {
-
-	protected $importer;
+class WordpressPostTransformer extends WordpressPageTransformer {
 
 	public function transform($item, $parent, $strategy) {
 		$post   = new WordpressPost();
@@ -58,10 +56,6 @@ class WordpressPostTransformer implements ExternalContentTransformer {
 		}
 	}
 
-	public function setImporter($importer) {
-		$this->importer = $importer;
-	}
-
 	protected function importComments($item, $post) {
 		$source = $item->getSource();
 		$client = $source->getClient();
@@ -86,35 +80,6 @@ class WordpressPostTransformer implements ExternalContentTransformer {
 			$comment->Created = date('Y-m-d H:i:s', strtotime($data['date_created_gmt']));
 			$comment->write();
 		}
-	}
-
-	protected function importMedia($item, $post) {
-		$source  = $item->getSource();
-		$params  = $this->importer->getParams();
-		$folder  = $params['AssetsPath'];
-		$content = $item->Content;
-
-		if ($folder) Folder::findOrMake($folder);
-
-		$url = trim(preg_replace('~^[a-z]+://~', null, $source->BaseUrl), '/');
-		$pattern = sprintf(
-			'~[a-z]+://%s/wp-content/uploads/[^"]+~', $url
-		);
-
-		if (!preg_match_all($pattern, $post->Content, $matches)) return;
-
-		foreach ($matches[0] as $match) {
-			if (!$contents = @file_get_contents($match)) continue;
-
-			$name = basename($match);
-			$path = Controller::join_links(ASSETS_PATH, $folder, $name);
-			$link = Controller::join_links(ASSETS_DIR, $folder, $name);
-
-			file_put_contents($path, $contents);
-			$post->Content = str_replace($match, $link, $post->Content);
-		}
-
-		$post->write();
 	}
 
 }

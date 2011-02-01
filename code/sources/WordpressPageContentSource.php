@@ -33,6 +33,19 @@ class WordpressPageContentSource extends WordpressContentSource {
 		return array('sitetree' => true);
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$fields->addFieldsToTab('Root.Import', array(
+			new CheckboxField('ImportMedia',
+				'Import and rewrite references to wordpress media?', true),
+			new TextField('AssetsPath',
+				'Upload wordpress files to', 'Uploads/Wordpress')
+		));
+
+		return $fields;
+	}
+
 	/**
 	 * Gets all the page content items that sit under a parent ID.
 	 *

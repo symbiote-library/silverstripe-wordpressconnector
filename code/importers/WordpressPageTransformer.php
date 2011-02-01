@@ -6,8 +6,11 @@
  */
 class WordpressPageTransformer implements ExternalContentTransformer {
 
+	protected $importer;
+
 	public function transform($item, $parent, $strategy) {
-		$page = new WordpressPage();
+		$page   = new WordpressPage();
+		$params = $this->importer->getParams();
 
 		$exists = DataObject::get_one('WordpressPage', sprintf(
 			'"WordpressID" = %d AND "ParentID" = %d', $item->WordpressID, $parent->ID
@@ -32,9 +35,47 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 
 		$page->WordpressID  = $item->WordpressID;
 		$page->OriginalData = serialize($item->getRemoteProperties());
-
 		$page->write();
+
+		if (isset($params['ImportMedia'])) {
+			$this->importMedia($item, $page);
+		}
+
 		return new TransformResult($page, $item->stageChildren());
+	}
+
+	public function setImporter($importer) {
+		$this->importer = $importer;
+	}
+
+	protected function importMedia($item, $page) {
+		$source  = $item->getSource();
+		$params  = $this->importer->getParams();
+		$folder  = $params['AssetsPath'];
+		$content = $item->Content;
+
+		if ($folder) $folderId = Folder::findOrMake($folder)->ID;
+
+		$url = trim(preg_replace('~^[a-z]+://~', null, $source->BaseUrl), '/');
+		$pattern = sprintf(
+			'~[a-z]+://%s/wp-content/uploads/[^"]+~', $url
+		);
+
+		if (!preg_match_all($pattern, $page->Content, $matches)) return;
+
+		foreach ($matches[0] as $match) {
+			if (!$contents = @file_get_contents($match)) continue;
+
+			$name = basename($match);
+			$path = Controller::join_links(ASSETS_PATH, $folder, $name);
+			$link = Controller::join_links(ASSETS_DIR, $folder, $name);
+
+			file_put_contents($path, $contents);
+			$page->Content = str_replace($match, $link, $page->Content);
+		}
+
+		Filesystem::sync($folderId);
+		$page->write();
 	}
 
 }
