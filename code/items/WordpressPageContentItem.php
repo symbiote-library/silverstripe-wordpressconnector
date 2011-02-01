@@ -110,4 +110,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		return $this->source->getPagesByParentId($this->externalId);
 	}
 
+	public function getType() {
+		return 'WpPage';
+	}
 }

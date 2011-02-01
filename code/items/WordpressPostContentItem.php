@@ -26,7 +26,7 @@ class WordpressPostContentItem extends ExternalContentItem {
 		$item->AuthorID      = $data['wp_author_id'];
 		$item->AuthorName    = $data['wp_author_display_name'];
 		$item->Status        = $data['post_status'];
-		$item->PostFormat    = $data['wp_post_format'];
+		$item->PostFormat    = isset($data['wp_post_format']) ? $data['wp_post_format'] : '';
 
 		if (isset($data['sticky'])) {
 			$item->Sticky = $data['sticky'];
@@ -118,6 +118,10 @@ class WordpressPostContentItem extends ExternalContentItem {
 
 	public function canImport() {
 		return class_exists('BlogEntry');
+	}
+	
+	public function getType() {
+		return 'WpPost';
 	}
 
 }
