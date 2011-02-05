@@ -14,6 +14,12 @@ and linked media from posts to the local site.
 *  The External Content module.
 *  The SilverStripe Blog Module is required for importing blog posts.
 
+## Installation Instructions
+*  Ensure the External Content module is installed
+*  Place this directory in the root of your SilverStripe site, making sure it
+   is named "wordpressconnector".
+*  Run example.com/dev/build on your site to re-build the database.
+
 ## Project Links
 *  [GitHub Project Page](https://github.com/ajshort/silverstripe-wordpressconnector)
 *  [Issue Tracker](https://github.com/ajshort/silverstripe-wordpressconnector/issues)
