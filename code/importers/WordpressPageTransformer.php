@@ -54,7 +54,7 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 		$folder  = $params['AssetsPath'];
 		$content = $item->Content;
 
-		if ($folder) $folderId = Folder::findOrMake($folder)->ID;
+		if ($folder) $folderId = Folder::find_or_make($folder)->ID;
 
 		$url = trim(preg_replace('~^[a-z]+://~', null, $source->BaseUrl), '/');
 		$pattern = sprintf(

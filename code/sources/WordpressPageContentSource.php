@@ -25,7 +25,7 @@ class WordpressPageContentSource extends WordpressContentSource {
 		}
 	}
 
-	public function stageChildren() {
+	public function stageChildren($showAll = false) {
 		return $this->getPagesByParentId(0);
 	}
 
@@ -50,10 +50,10 @@ class WordpressPageContentSource extends WordpressContentSource {
 	 * Gets all the page content items that sit under a parent ID.
 	 *
 	 * @param  int $parent
-	 * @return DataObjectSet
+	 * @return ArrayList
 	 */
 	public function getPagesByParentId($parent) {
-		$result = new DataObjectSet();
+		$result = new ArrayList();
 
 		if (!$this->isValid()) {
 			return $result;
@@ -66,7 +66,7 @@ class WordpressPageContentSource extends WordpressContentSource {
 			));
 		} catch (Zend_Exception $exception) {
 			SS_Log::log($exception, SS_Log::ERR);
-			return new DataObjectSet();
+			return new ArrayList();
 		}
 
 		foreach ($pages as $page) {
@@ -78,7 +78,7 @@ class WordpressPageContentSource extends WordpressContentSource {
 		return $result;
 	}
 
-	public function canCreate() {
+	public function canCreate($member = null) {
 		return true;
 	}
 

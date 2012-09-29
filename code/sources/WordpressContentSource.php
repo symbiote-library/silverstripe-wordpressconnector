@@ -58,7 +58,7 @@ class WordpressContentSource extends ExternalContentSource {
 	/**
 	 * @return array
 	 */
-	public function fieldLabels() {
+	public function fieldLabels($includerelations = true) {
 		return array_merge(parent::fieldLabels(), array(
 			'ConnError' => _t('WordpresConnector.CONNERROR', 'Could not connect to the wordpress site:'),
 			'BaseUrl'   => _t('WordpressConnector.WPBASEURL', 'Wordpress Base URL'),
@@ -85,7 +85,7 @@ class WordpressContentSource extends ExternalContentSource {
 		return $this->client;
 	}
 
-	public function getContentImporter() {
+	public function getContentImporter($target = null) {
 		return new WordpressImporter();
 	}
 
@@ -120,7 +120,7 @@ class WordpressContentSource extends ExternalContentSource {
 	/**
 	 * Prevent creating this abstract content source type.
 	 */
-	public function canCreate() {
+	public function canCreate($member = null) {
 		return false;
 	}
 
