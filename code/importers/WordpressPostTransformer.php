@@ -169,7 +169,8 @@ class WordpressPostTransformer extends WordpressPageTransformer {
 		));
 
 		if ($comments) foreach ($comments as $data) {
-			$comment = new PageComment();
+			$comment = new Comment();
+			$comment->BaseClass = "SiteTree";
 			$comment->Name         = $data['author'];
 			$comment->Comment      = $data['content'];
 			$comment->CommenterURL = $data['author_url'];
