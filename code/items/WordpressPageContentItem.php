@@ -35,7 +35,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		$item->AuthorName    = $data['wp_author_display_name'];
 		$item->Template      = $data['wp_page_template'];
 
-		$categories = new DataObjectSet();
+		$categories = new ArrayList();
 		foreach ($data['categories'] as $category) {
 			$categories->push(new ArrayData(array(
 				'Name' => $category
@@ -43,7 +43,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		}
 		$item->Categories = $categories;
 
-		$custom = new DataObjectSet();
+		$custom = new ArrayList();
 		foreach ($data['custom_fields'] as $field) {
 			$custom->push(new ArrayData(array(
 				'ID'    => $field['id'],
@@ -106,7 +106,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		return $fields;
 	}
 
-	public function stageChildren() {
+	public function stageChildren($showAll = false) {
 		return $this->source->getPagesByParentId($this->externalId);
 	}
 

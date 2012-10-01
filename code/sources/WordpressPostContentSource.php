@@ -25,8 +25,8 @@ class WordpressPostContentSource extends WordpressContentSource {
 		}
 	}
 
-	public function stageChildren() {
-		$result = new DataObjectSet();
+	public function stageChildren($showAll = false) {
+		$result = new ArrayList();
 
 		if (!$this->isValid()) {
 			return $result;
@@ -41,7 +41,7 @@ class WordpressPostContentSource extends WordpressContentSource {
 			));
 		} catch (Zend_Exception $exception) {
 			SS_Log::log($exception, SS_Log::ERR);
-			return new DataObjectSet();
+			return new Arraylist();
 		}
 
 		foreach ($posts as $post) {
@@ -80,7 +80,7 @@ class WordpressPostContentSource extends WordpressContentSource {
 		return $fields;
 	}
 
-	public function canCreate() {
+	public function canCreate($member = null) {
 		return true;
 	}
 
