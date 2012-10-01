@@ -29,12 +29,17 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 		$page->Title           = $item->Title;
 		$page->MenuTitle       = $item->Title;
 		$page->Content         = $item->Description;
+
+		$page->Content = HTTP::urlRewriter($page->Content, ' WordpressPageTransformer::transform_url($URL) ' );
+
 		$page->URLSegment      = $item->Slug;
 		$page->ParentID        = $parent->ID;
 		$page->ProvideComments = $item->AllowComments;
 
 		$page->WordpressID  = $item->WordpressID;
-		$page->OriginalData = serialize($item->getRemoteProperties());
+		$properties = $item->getRemoteProperties();
+		$page->OriginalData = serialize($properties);
+		$page->OriginalLink = isset($properties['Link']) ? $properties['Link'] : null;
 		$page->write();
 
 		if (isset($params['ImportMedia'])) {
@@ -42,6 +47,23 @@ class WordpressPageTransformer implements ExternalContentTransformer {
 		}
 
 		return new TransformResult($page, $item->stageChildren());
+	}
+
+	/**
+	 * Transform a Wordpress URL by looking up OriginalLink values in the database.
+	 * If no such transformation exists, the unmodified URL is returned.
+	 * 
+	 * @param  string $url Original URL from the site
+	 * @return string      New URL
+	 */
+	static function transform_url($url) {
+		if($match = WordpressPage::get()->filter("OriginalLink", $url)->First()) {
+			return $match->Link();
+		}
+		if($match = WordpressPost::get()->filter("OriginalLink", $url)->First()) {
+			return $match->Link();
+		}
+		return $url;
 	}
 
 	public function setImporter($importer) {

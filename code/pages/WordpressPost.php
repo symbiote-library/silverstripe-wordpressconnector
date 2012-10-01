@@ -8,7 +8,8 @@ class WordpressPost extends BlogEntry {
 
 	public static $db = array(
 		'WordpressID'  => 'Int',
-		'OriginalData' => 'Text'
+		'OriginalData' => 'Text',
+		'OriginalLink' => 'Varchar(255)',
 	);
 
 	public function getCMSFields() {
@@ -16,6 +17,7 @@ class WordpressPost extends BlogEntry {
 
 		$fields->addFieldsToTab('Root.Wordpress', array(
 			new ReadonlyField('WordpressID', 'Wordpress Post ID'),
+			new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
 			new ReadonlyField('OriginalData', 'Original Wordpress Data')
 		));
 

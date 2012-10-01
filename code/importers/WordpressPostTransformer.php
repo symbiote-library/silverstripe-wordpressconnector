@@ -141,7 +141,9 @@ class WordpressPostTransformer extends WordpressPageTransformer {
 		$post->MetaKeywords    = $item->Keywords;
 
 		$post->WordpressID  = $item->PostID;
-		$post->OriginalData = serialize($item->getRemoteProperties());
+		$properties = $item->getRemoteProperties();
+		$post->OriginalData = serialize($properties);
+		$post->OriginalLink = isset($properties['Link']) ? $properties['Link'] : null;
 		$post->write();
 
 		// Import comments across from the wordpress site.
