@@ -8,14 +8,15 @@ class WordpressPage extends Page {
 
 	public static $db = array(
 		'WordpressID'  => 'Int',
-		'OriginalData' => 'Text'
+		'OriginalData' => 'Text',
+		'OriginalLink' => 'Varchar(255)',
 	);
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
-
 		$fields->addFieldsToTab('Root.Wordpress', array(
 			new ReadonlyField('WordpressID', 'Wordpress Page ID'),
+			new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
 			new ReadonlyField('OriginalData', 'Original Wordpress Data')
 		));
 
