@@ -161,7 +161,7 @@ class WordpressPostTransformer extends WordpressPageTransformer {
 		$source = $item->getSource();
 		$client = $source->getClient();
 
-		$struct = new Zend_XmlRpc_Value_Struct(array(
+		$struct = new Struct(array(
 			'post_id' => $item->PostID,
 			'number'  => 999999
 		));
