@@ -59,11 +59,6 @@ class WordpressPageContentItem extends ExternalContentItem {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->fieldByName('Root.Details')->getChildren()->changeFieldOrder(array(
-			'Title', 'Status', 'CreatedAt', 'ShowContentInMenu', 'Description',
-			'Excerpt', 'TextMore', 'ExternalContentItem_Alert'
-		));
-
 		$fields->addFieldToTab('Root.Details', new ReadonlyField(
 			'CategoryList', 'Categories',
 			implode(', ', $this->Categories->map('Name', 'Name'))
@@ -92,16 +87,16 @@ class WordpressPageContentItem extends ExternalContentItem {
 			new ReadonlyField('Order', null, $this->Order)
 		));
 
-		$custom = new TableListField('CustomFields', null, array(
-			'ID'    => 'ID',
-			'Key'   => 'Key',
+		$fields->addFieldToTab(
+			'Root.CustomFields', ($custom = new GridField('CustomFields', null, $this->CustomFields))
+		);
+		$config = $custom->getConfig();
+		$config->removeComponentsByType('GridFieldFilterHeader');
+		$config->getComponentByType('GridFieldDataColumns')->setDisplayFields(array(
+			'ID' => 'ID',
+			'Key' => 'Key',
 			'Value' => 'Value'
 		));
-		$custom->setCustomSourceItems($this->CustomFields);
-
-		$fields->addFieldToTab(
-			'Root.CustomFields', $custom->performReadonlyTransformation()
-		);
 
 		return $fields;
 	}

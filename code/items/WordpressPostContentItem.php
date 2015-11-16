@@ -56,11 +56,6 @@ class WordpressPostContentItem extends ExternalContentItem {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$fields->fieldByName('Root.Details')->getChildren()->changeFieldOrder(array(
-			'Title', 'PostID', 'Status', 'CreatedAt', 'ShowContentInMenu',
-			'Description', 'Excerpt', 'TextMore', 'ExternalContentItem_Alert'
-		));
-
 		$fields->addFieldToTab('Root.Details', new ReadonlyField(
 			'CategoryList', 'Categories',
 			implode(', ', $this->Categories->map('Name', 'Name'))
@@ -87,16 +82,16 @@ class WordpressPostContentItem extends ExternalContentItem {
 			new ReadonlyField('Sticky', null, $this->Sticky)
 		));
 
-		$custom = new TableListField('CustomFields', null, array(
-			'ID'    => 'ID',
-			'Key'   => 'Key',
+		$fields->addFieldToTab(
+			'Root.CustomFields', ($custom = new GridField('CustomFields', null, $this->CustomFields))
+		);
+		$config = $custom->getConfig();
+		$config->removeComponentsByType('GridFieldFilterHeader');
+		$config->getComponentByType('GridFieldDataColumns')->setDisplayFields(array(
+			'ID' => 'ID',
+			'Key' => 'Key',
 			'Value' => 'Value'
 		));
-		$custom->setCustomSourceItems($this->CustomFields);
-
-		$fields->addFieldToTab(
-			'Root.CustomFields', $custom->performReadonlyTransformation()
-		);
 
 		if (!class_exists('BlogEntry')) {
 			$fields->addFieldToTab('Root.Import', new LiteralField(
