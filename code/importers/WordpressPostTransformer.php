@@ -3,7 +3,7 @@
  * @package silverstripe-wordpressconnector
  */
 
-require_once 'Zend/XmlRpc/Value/Struct.php';
+use Zend\XmlRpc\Value\Struct;
 
 /**
  * Transforms a remote wordpress post into a local {@link WordpressPost}.

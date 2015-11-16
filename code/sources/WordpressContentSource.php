@@ -3,7 +3,7 @@
  * @package silverstripe-wordpressconnector
  */
 
-require_once 'Zend/XmlRpc/Client.php';
+use Zend\XmlRpc\Client;
 
 /**
  * The base wordpress content source.
@@ -14,7 +14,7 @@ class WordpressContentSource extends ExternalContentSource {
 
 	const DEFAULT_CACHE_LIFETIME = 3600;
 
-	public static $db = array(
+	private static $db = array(
 		'BaseUrl'       => 'Varchar(255)',
 		'BlogId'        => 'Int',
 		'Username'      => 'Varchar(255)',
@@ -22,7 +22,7 @@ class WordpressContentSource extends ExternalContentSource {
 		'CacheLifetime' => 'Int'
 	);
 
-	public static $defaults = array(
+	private static $defaults = array(
 		'CacheLifetime' => self::DEFAULT_CACHE_LIFETIME
 	);
 

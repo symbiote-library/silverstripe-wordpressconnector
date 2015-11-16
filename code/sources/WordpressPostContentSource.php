@@ -6,7 +6,7 @@
  */
 class WordpressPostContentSource extends WordpressContentSource {
 
-	public static $icon = 'wordpressconnector/images/wordpresspostsource';
+	private static $icon = 'wordpressconnector/images/wordpresspostsource';
 
 	public function getRoot() {
 		return $this;
@@ -63,7 +63,7 @@ class WordpressPostContentSource extends WordpressContentSource {
 				'<p>The Wordpress connector requires the blog module to import posts.</p>'
 			));
 		} else {
-			$blogs = DataObject::get('BlogHolder');
+			$blogs = BlogHolder::get();
 			$map = $blogs ? $blogs->map() : array();
 
 			$fields->addFieldsToTab('Root.Import', array(

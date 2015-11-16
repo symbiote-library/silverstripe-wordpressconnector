@@ -3,8 +3,8 @@
 
 $Description
 
-<% control Children %>
+<% loop Children %>
 <p>
 <a href="$Link">$Title</a>  
 </p>
-<% end_control %>
+<% end_loop %>

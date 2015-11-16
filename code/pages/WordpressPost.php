@@ -6,7 +6,7 @@
  */
 class WordpressPost extends BlogEntry {
 
-	public static $db = array(
+	private static $db = array(
 		'WordpressID'  => 'Int',
 		'OriginalData' => 'Text',
 		'OriginalLink' => 'Varchar(255)',
