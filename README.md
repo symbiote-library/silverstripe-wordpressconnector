@@ -10,7 +10,7 @@ and linked media from posts to the local site.
 *  Marucs Nyeholt (<marcus@silverstripe.com.au>)
 
 ## Requirements
-*  SilverStripe 2.4+
+*  SilverStripe 2.4+ and 3.1.
 *  The External Content module.
 *  The SilverStripe Blog Module is required for importing blog posts.
 
