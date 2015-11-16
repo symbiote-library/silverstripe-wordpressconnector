@@ -88,7 +88,7 @@ class WordpressPageContentItem extends ExternalContentItem {
 		));
 
 		$fields->addFieldToTab(
-			'Root.CustomFields', ($custom = new GridField('CustomFields', null, $this->CustomFields))
+			'Root.CustomFields', ($custom = new GridField('CustomFields', null, $this->CustomFields, new GridFieldConfig_RecordViewer()))
 		);
 		$config = $custom->getConfig();
 		$config->removeComponentsByType('GridFieldFilterHeader');
