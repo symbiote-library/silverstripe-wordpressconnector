@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/wordpressconnector",
+	"name": "silverstripe-australia/wordpressconnector",
 	"description": "A Wordpress connector for SilverStripe that allows you to link to and import posts and pages.",
 	"require": {
 		"silverstripe/external-content": "~1.0"
