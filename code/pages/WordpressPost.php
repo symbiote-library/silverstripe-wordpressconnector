@@ -4,27 +4,29 @@
  *
  * @package silverstripe-wordpressconnector
  */
-class WordpressPost extends BlogEntry {
+class WordpressPost extends BlogEntry
+{
 
-	private static $db = array(
-		'WordpressID'  => 'Int',
-		'OriginalData' => 'Text',
-		'OriginalLink' => 'Varchar(255)',
-	);
+    private static $db = array(
+        'WordpressID'  => 'Int',
+        'OriginalData' => 'Text',
+        'OriginalLink' => 'Varchar(255)',
+    );
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
 
-		$fields->addFieldsToTab('Root.Wordpress', array(
-			new ReadonlyField('WordpressID', 'Wordpress Post ID'),
-			new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
-			new ReadonlyField('OriginalData', 'Original Wordpress Data')
-		));
+        $fields->addFieldsToTab('Root.Wordpress', array(
+            new ReadonlyField('WordpressID', 'Wordpress Post ID'),
+            new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
+            new ReadonlyField('OriginalData', 'Original Wordpress Data')
+        ));
 
-		return $fields;
-	}
-
+        return $fields;
+    }
 }
 
-class WordpressPost_Controller extends BlogEntry_Controller {
+class WordpressPost_Controller extends BlogEntry_Controller
+{
 }

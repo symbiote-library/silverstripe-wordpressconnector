@@ -4,82 +4,89 @@
  *
  * @package silverstripe-wordpressconnector
  */
-class WordpressPageContentSource extends WordpressContentSource {
+class WordpressPageContentSource extends WordpressContentSource
+{
 
-	private static $icon = 'wordpressconnector/images/wordpresspagesource';
+    private static $icon = 'wordpressconnector/images/wordpresspagesource';
 
-	public function getRoot() {
-		return $this;
-	}
+    public function getRoot()
+    {
+        return $this;
+    }
 
-	public function getObject($id) {
-		$client = $this->getClient($id);
-		$id     = $this->decodeId($id);
+    public function getObject($id)
+    {
+        $client = $this->getClient($id);
+        $id     = $this->decodeId($id);
 
-		$page = $client->call('wp.getPage', array(
-			$this->BlogId, $id, $this->Username, $this->Password
-		));
+        $page = $client->call('wp.getPage', array(
+            $this->BlogId, $id, $this->Username, $this->Password
+        ));
 
-		if ($page) {
-			return WordpressPageContentItem::factory($this, $page);
-		}
-	}
+        if ($page) {
+            return WordpressPageContentItem::factory($this, $page);
+        }
+    }
 
-	public function stageChildren($showAll = false) {
-		return $this->getPagesByParentId(0);
-	}
+    public function stageChildren($showAll = false)
+    {
+        return $this->getPagesByParentId(0);
+    }
 
-	public function allowedImportTargets() {
-		return array('sitetree' => true);
-	}
+    public function allowedImportTargets()
+    {
+        return array('sitetree' => true);
+    }
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
 
-		$fields->addFieldsToTab('Root.Import', array(
-			new CheckboxField('ImportMedia',
-				'Import and rewrite references to wordpress media?', true),
-			new TextField('AssetsPath',
-				'Upload wordpress files to', 'Uploads/Wordpress')
-		));
+        $fields->addFieldsToTab('Root.Import', array(
+            new CheckboxField('ImportMedia',
+                'Import and rewrite references to wordpress media?', true),
+            new TextField('AssetsPath',
+                'Upload wordpress files to', 'Uploads/Wordpress')
+        ));
 
-		return $fields;
-	}
+        return $fields;
+    }
 
-	/**
-	 * Gets all the page content items that sit under a parent ID.
-	 *
-	 * @param  int $parent
-	 * @return ArrayList
-	 */
-	public function getPagesByParentId($parent) {
-		$result = new ArrayList();
+    /**
+     * Gets all the page content items that sit under a parent ID.
+     *
+     * @param  int $parent
+     * @return ArrayList
+     */
+    public function getPagesByParentId($parent)
+    {
+        $result = new ArrayList();
 
-		if (!$this->isValid()) {
-			return $result;
-		}
+        if (!$this->isValid()) {
+            return $result;
+        }
 
-		try {
-			$client = $this->getClient();
-			$pages  = $client->call('wp.getPages', array(
-				$this->BlogId, $this->Username, $this->Password
-			));
-		} catch (Zend_Exception $exception) {
-			SS_Log::log($exception, SS_Log::ERR);
-			return new ArrayList();
-		}
+        try {
+            $client = $this->getClient();
+            $pages  = $client->call('wp.getPages', array(
+                $this->BlogId, $this->Username, $this->Password
+            ));
+        } catch (Zend_Exception $exception) {
+            SS_Log::log($exception, SS_Log::ERR);
+            return new ArrayList();
+        }
 
-		foreach ($pages as $page) {
-			if ($page['wp_page_parent_id'] == $parent) {
-				$result->push(WordpressPageContentItem::factory($this, $page));
-			}
-		}
+        foreach ($pages as $page) {
+            if ($page['wp_page_parent_id'] == $parent) {
+                $result->push(WordpressPageContentItem::factory($this, $page));
+            }
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public function canCreate($member = null) {
-		return true;
-	}
-
+    public function canCreate($member = null)
+    {
+        return true;
+    }
 }

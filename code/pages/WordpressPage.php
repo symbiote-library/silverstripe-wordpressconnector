@@ -4,26 +4,28 @@
  *
  * @package silverstripe-wordpressconnector
  */
-class WordpressPage extends Page {
+class WordpressPage extends Page
+{
 
-	private static $db = array(
-		'WordpressID'  => 'Int',
-		'OriginalData' => 'Text',
-		'OriginalLink' => 'Varchar(255)',
-	);
+    private static $db = array(
+        'WordpressID'  => 'Int',
+        'OriginalData' => 'Text',
+        'OriginalLink' => 'Varchar(255)',
+    );
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->addFieldsToTab('Root.Wordpress', array(
-			new ReadonlyField('WordpressID', 'Wordpress Page ID'),
-			new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
-			new ReadonlyField('OriginalData', 'Original Wordpress Data')
-		));
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $fields->addFieldsToTab('Root.Wordpress', array(
+            new ReadonlyField('WordpressID', 'Wordpress Page ID'),
+            new ReadonlyField('OriginalLink', 'Original Wordpress URL'),
+            new ReadonlyField('OriginalData', 'Original Wordpress Data')
+        ));
 
-		return $fields;
-	}
-
+        return $fields;
+    }
 }
 
-class WordpressPage_Controller extends Page_Controller {
+class WordpressPage_Controller extends Page_Controller
+{
 }
