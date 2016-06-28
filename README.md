@@ -1,3 +1,7 @@
+> ## **IMPORTANT**
+
+> This module is no longer maintained, however if you would like to step forward and do so, please let us know.
+
 # SilverStripe Wordpress Connector Module
 
 The Wordpress connector module allows you to link to and import pages and posts
