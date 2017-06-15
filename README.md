@@ -1,6 +1,6 @@
 > ## **IMPORTANT**
 
-> This module is no longer maintained, however if you would like to step forward and do so, please let us know.
+> This module is no longer actively maintained, however, if you're interested in adopting it, please let us know!
 
 # SilverStripe Wordpress Connector Module
 
