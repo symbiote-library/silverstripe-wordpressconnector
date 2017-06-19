@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe-australia/wordpressconnector",
+	"name": "symbiote-library/silverstripe-wordpressconnector",
 	"description": "A Wordpress connector for SilverStripe that allows you to link to and import posts and pages.",
 	"type": "silverstripe-module",
 	"require": {
@@ -7,6 +7,9 @@
 		"zendframework/zend-xmlrpc": "~2.5"
 	},
 	"extra": {
-		"installer-name": "wordpressconnector"
+		"installer-name": "wordpressconnector",
+		"branch-alias": {
+			"dev-master": "3.0.x-dev"
+		}
 	}
 }
