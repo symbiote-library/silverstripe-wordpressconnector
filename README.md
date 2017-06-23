@@ -11,7 +11,7 @@ The module supports importing both pages and posts, and can also migrate comment
 and linked media from posts to the local site.
 
 ## Maintainer Contacts
-*  Marucs Nyeholt (<marcus@silverstripe.com.au>)
+*  Marucs Nyeholt (<marcus@symbiote.com.au>)
 
 ## Requirements
 *  SilverStripe 2.4+ and 3.1.

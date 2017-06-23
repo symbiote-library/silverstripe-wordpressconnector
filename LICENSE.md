@@ -1,6 +1,6 @@
 # SilverStripe Wordpress External Connector Module
 
-Copyright &copy; 20010, SilverStripe Australia PTY LTD - www.silverstripe.com.au
+Copyright &copy; 20010, Symbiote PTY LTD - www.symbiote.com.au
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
